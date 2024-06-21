@@ -12,6 +12,7 @@ ENV PYTHONUNBUFFERED 1
 RUN pip install --upgrade pip
 RUN apt-get update
 RUN apt install libcairo2-dev pkg-config python3-dev -y
+RUN apt get install  python-dbus -y
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
