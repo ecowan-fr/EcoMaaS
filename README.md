@@ -47,6 +47,8 @@ OIDC_OP_JWKS_ENDPOINT="https://HOST/oauth/certs.php"
 ```
 
 ## RUN 
+Don't forget to create the .env.dev file first
+
 ```
 cd EcoMaaS/EcOMaaS/
 docker-compose up -d --build
