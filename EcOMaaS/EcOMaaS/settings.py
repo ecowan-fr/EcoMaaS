@@ -23,7 +23,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: keep the secret key used in production secret!
 DEBUG = bool(os.environ.get("DEBUG", default=0))# SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS")
 
 CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(" ")
 # Application definition
