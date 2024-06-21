@@ -17,7 +17,7 @@ MarkupSafe==2.1.5
 mdurl==0.1.2
 mozilla-django-oidc==4.0.1
 netifaces==0.11.0
-oauth2-provider==0.0
+#oauth2-provider==0.0
 oauthlib==3.2.2
 oidcmsg==1.5.4
 oidcop==2.3.4
