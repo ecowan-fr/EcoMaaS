@@ -45,3 +45,10 @@ OIDC_OP_USER_ENDPOINT = "https://HOST/oauth/userinfo.php?access_token="
 OIDC_RP_SIGN_ALGO="RS256"
 OIDC_OP_JWKS_ENDPOINT="https://HOST/oauth/certs.php"
 ```
+
+## RUN 
+```
+docker-compose up -d --build
+docker-compose exec web python manage.py migrate --noinput
+
+```
