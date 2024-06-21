@@ -25,7 +25,7 @@ DEBUG = bool(os.environ.get("DEBUG", default=0))# SECURITY WARNING: don't run wi
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS")
 
-CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(" ")
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS")
 # Application definition
 
 INSTALLED_APPS = [
