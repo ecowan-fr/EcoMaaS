@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block title %}Machines{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+
+{% if  user.is_superuser or user.email == machine.description %}
+    <div class="storage info-box" style="margin: 10px;">
+        <h2>Generate password :</h2>
+        <form action="{% url 'mkpasswd' %}" method="POST">
+            {% csrf_token %}
+            <label for="fname">Password:</label><br>
+            <input type="text" id="password" name="password" value="Pasw0rd+"><br>
+            <button type="submit">Generate</button>
+        </form>
+        <p>{{hash}}</p>
+    </div>
+
+{% endif %}
+
+
+{% else %}
+    <h1>Not logged in</h1>
+{% endif %}
+
+{% endblock %}

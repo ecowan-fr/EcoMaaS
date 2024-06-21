@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block title %}Machines{% endblock %}
+{% block content %}
+<div class="details">
+{% if user.is_authenticated %}
+
+    {% if  user.is_superuser or user.email == machine.description %}
+
+        {%if machine.status_name == "Ready" %}
+            <div class="info-box" style="text-align: center;">
+                <form action="{% url 'deploy' maas_id machine.system_id  %}" method="POST">
+                    {% csrf_token %}
+                    <label for="os">Choose an OS:</label>
+                    <select id="os" name="oslist">
+                    {% for os in oslist %}
+                        <option value="{{ os.value }}">{{ os.name }}</option>
+                    {% endfor %}
+                    </select>
+                    <label for="CloudInit">Choose an Cloudinit Template:</label>
+                    <select id="CloudInit" name="cloudinitlist"  onchange="updateTextarea()">
+                        <option value="">Empty</option>
+                        {% for cl in CloudInitList %}
+                            <option value="{{ cl.userdata }}">{{ cl.name }}</option>
+                        {% endfor %}
+                    </select><br>
+                    <textarea name="cloudinit" id="cloudinit" cols="50" rows="30"></textarea>
+                    <br>
+                    <button type="submit">Deploy</button>
+                </form>
+            </div>
+            <div class="storage info-box">
+                <h3>Storage Layout<ion-icon name="server-outline"></ion-icon></h3>
+                {% for disk in machine.physicalblockdevice_set %}
+                    <p><b>{{ disk.name }}: </b></p>
+                    <p>⠀⠀Size : {{ disk.size|divide:1000000000 }}GB</p>
+                    <p>⠀⠀Model : {{ disk.model }}</p>
+                    <p>⠀⠀Serial : {{disk.serial}}</p>
+                    <p>⠀⠀Tags : {% for tag in disk.tags %} {{tag}} {% endfor %}</p>
+                    {% for partitions in disk.partitions %}
+                        <p>⠀⠀Partition : {{partitions.uuid}}</p>
+                        <p>⠀⠀⠀⠀Size : {{partitions.size|divide:1000000000}}GB</p>
+                        <p>⠀⠀⠀⠀Filesystem Type: {{partitions.filesystem.fstype}}</p>
+                        <p>⠀⠀⠀⠀Mount: {{partitions.filesystem.mount_point}}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <h1>Can only edit Machine while Ready</h1>
+        {% endif %}
+    {% endif %}
+
+    <script>
+        function updateTextarea() {
+            var select = document.getElementById("CloudInit");
+            var textarea = document.getElementById("cloudinit");
+            textarea.value = select.value;
+        }
+    </script>
+</div>
+{% else %}
+    <h1>Not logged in</h1>
+{% endif %}
+
+{% endblock %}

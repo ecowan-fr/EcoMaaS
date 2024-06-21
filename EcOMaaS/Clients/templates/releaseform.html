@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block title %}Machines{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+
+    {% if  user.is_superuser or user.email == machine.description %}
+    <div class="storage info-box" style="margin: 10px;">
+        <h2>Release Machine :</h2>
+        <h3>{{machine.fqdn}}</h3>
+        <form action="{% url 'release' maas_id machine.system_id  %}" class="release" method="POST">
+            {% csrf_token %}
+            <label for="quick_erase" class="release-label"><input type="checkbox" id="quick_erase" name="quick_erase" value="True" class="release-label"> Quick Erase</label>
+            <label for="secure_erase" class="release-label"><input type="checkbox" id="secure_erase" name="secure_erase" value="True" class="release-label"> Secure Erase</label>
+            <button type="submit">Release</button>
+        </form>
+    </div>
+    <form action="{% url 'machine' maas_id machine.system_id  %}" method="GET">
+        <button type="submit">Cancel</button>
+    </form>
+    {% endif %}
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    checkboxes.forEach(function(cb) {
+                        if (cb !== checkbox) {
+                            cb.checked = false;
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+{% else %}
+    <h1>Not logged in</h1>
+{% endif %}
+
+{% endblock %}
