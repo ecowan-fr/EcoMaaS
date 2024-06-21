@@ -48,6 +48,7 @@ OIDC_OP_JWKS_ENDPOINT="https://HOST/oauth/certs.php"
 
 ## RUN 
 ```
+cd EcoMaaS/EcOMaaS/
 docker-compose up -d --build
 docker-compose exec web python manage.py migrate --noinput
 
