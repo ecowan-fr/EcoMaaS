@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import mimetypes
 from pathlib import Path
 import os
+import json
 mimetypes.add_type("text/css", ".css", True)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +24,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: keep the secret key used in production secret!
 DEBUG = bool(os.environ.get("DEBUG", default=0))# SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS")
+ALLOWED_HOSTS = json.loads(os.environ.get("DJANGO_ALLOWED_HOSTS"))
 
-CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS")
+CSRF_TRUSTED_ORIGINS = json.loads(os.environ.get("CSRF_TRUSTED_ORIGINS"))
 # Application definition
 
 INSTALLED_APPS = [
