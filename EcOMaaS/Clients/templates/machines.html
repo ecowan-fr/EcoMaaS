@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block title %}Machines{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+
+
+
+{% for key, value in dic_machines.items %}
+    <a href="{% url 'show_maas' key  %}"><h2> {{ key }}</h2> </a>
+    <div class="details">
+        {% for machine in value %}
+            <div class="details-menu">
+                {% if  user.is_superuser or user.email == machine.description %}
+                <div class="details-box">
+                    {% if machine.power_state == "on" %} <h3><a href="{% url 'machine' key machine.system_id  %}" style="color: green;">  {{ machine.fqdn }}  </a></h3> {% else %}  <h3><a href="{% url 'machine' key machine.system_id  %}" style="color: red;">  {{ machine.fqdn }}   </a></h3> {% endif %}
+                    <p>IP : {% for ip in machine.ip_addresses %} {{ip}} {% endfor %}</p>
+                    <p>OS : {% if machine.osystem == "ubuntu" %} {{machine.osystem|name}} {{machine.distro_series|name}} {% else %} {{ machine.distro_series|name }} {% endif %}</p>
+                    <p>RAM : {{ machine.memory|roundGB }} GB</p>
+                    <p>CPU : {{ machine.cpu_count }} Cores</p>
+                    <p>Storage : {{ machine.storage|divide:1000 }} GB</p>
+                    <p>System ID : {{ machine.system_id }}</p>
+                    {% if  machine.description != "" %} <p style="font-weight: 999;">Owner : {{ machine.description }}</p> {% endif %}
+                    <p>Tags : {% for tag in machine.tag_names %} {{ tag }} {% endfor %}</p>
+                    <p>Status : {{machine.status_name}}</p>
+
+
+                </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+{% else %}
+    <h1>Not logged in</h1>
+{% endif %}
+
+{% endblock %}

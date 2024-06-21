@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block title %}{{ machine.hostname }}{% endblock %}
+{% block content %}
+{% if  user.is_superuser or user.email == machine.description %}
+<div class="details">
+    <div class="Hostname details-box">
+        <h2 class="blue">{{ machine.hostname }}         <a href="" class="powerbutton" onclick='clicked(event,"{{ machine.system_id }}","{{ machine.power_state }}")'> {% if machine.power_state == "on" %} <ion-icon name="power-outline" style="color: green;"></ion-icon> {% elif machine.power_state == "error" %}  <ion-icon name="warning-outline" style="color: orange;"></ion-icon>  {% else %}<ion-icon name="power-outline" style="color: red;"></ion-icon> {% endif %} </a></h2>
+        <p>
+            {% if machine.description != "" %} 
+                {{ machine.description }} 
+                {% if  user.is_superuser %}
+                    <form action="{% url 'dealocate' maas_id machine.system_id  %}" class="form-inline" method="POST">{% csrf_token %}<button type="submit">Dealocate</button> </form>
+                {% endif %} 
+            {% endif %}
+            {% if machine.description == "" %} 
+                Not assigned
+                <form action="{% url 'alocate' maas_id machine.system_id  %}" class="form-inline" method="POST">
+                    {% csrf_token %}
+                    <label for="email">Email from User:</label>
+                    <input type="email" id="email" name="email" required>
+                    <button type="submit">Assign</button>
+                </form>
+            {% endif %}
+            {% if machine.status_name == "Ready" and user.is_superuser %}
+                <form action="{% url 'deployform' maas_id machine.system_id  %}"  class="form-inline" method="GET">
+                    <button type="submit">Deploy</button>
+                </form>
+            {% endif %}
+
+            {% if machine.status_name != "Ready" and user.is_superuser %}
+            <form action="{% url 'releaseform' maas_id machine.system_id  %}"  class="form-inline" method="GET">
+                <button type="submit">Release</button>
+            </form>
+            {% endif %}
+
+
+            {% if machine.status_name == "Ready" and edit_by_user %}
+                {% if not user.is_superuser %}
+                    <form action="{% url 'deployform' maas_id machine.system_id  %}"  class="form-inline" method="GET">
+                        <button type="submit">Deploy</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+
+        {% if machine.status_name != "Ready" and edit_by_user %}
+            {% if not user.is_superuser %}
+                <form action="{% url 'releaseform' maas_id machine.system_id  %}"  class="form-inline" method="GET">
+                    <button type="submit">Release</button>
+                </form>
+            {% endif %}
+        {% endif %}
+
+            
+        </p>
+    </div>
+    <div class="details-box">
+        <div class="mahcine-detail">
+            <div class="details-box box">
+                <h3> Status: </h3>
+                <p>{{machine.status_name}}</p>
+                {% if machine.status_name == "Deploying" %}
+                    <p style="font-size: 0.8em; font-weight: 999;">The deployment can take up to 40 minutes.</p>
+                {% endif %}
+            </div>
+            <div class="details-box box">
+                <h3>CPU :</h3>
+                <p>{% if machine.cpu_count == "" %} None {% else %} {{ machine.cpu_count }} Cores {% endif %}</p>
+            </div>
+            <div class="details-box box">
+                <h3>RAM :</h3>
+                <p>{% if  machine.memory == "" %} None {% else %} {{ machine.memory|roundGB }} {% endif %} </p>
+            </div>
+            <div class="details-box box">
+                <h3>Storage :</h3>
+                <p> {{ machine.storage|divide:1000 }}GB</p>
+            </div>
+            <div class="details-box box">
+                <h3>OS :</h3>
+                <p> {% if machine.osystem == "ubuntu" %} {{machine.osystem|name}} {{machine.distro_series|name}} {% else %} {{ machine.distro_series|name }} {% endif %}</p>
+            </div> 
+            <div class="details-box box">
+                <h3> IP: </h3>
+                <p>{% if machine.ip_addresses == "" %} None {% else %} {% for ip in machine.ip_addresses %}{{ ip }} {% if machine.ip_addresses|length != 1 %} , {% endif %} {% endfor %} {% endif %}</p>
+            </div>
+
+        </div>
+    </div>
+    <div class="details-box">
+       <div>
+       <dl class="ligne">
+            <dt class="space">⠀</dt>
+            <dt class="space">⠀</dt>
+            <dt><h4>Mainboard</h4></dt>
+            <dt class="space">⠀</dt>
+            <dt>System Vendor</dt>
+            <dd>{{ machine.hardware_info.system_vendor }}</dd>
+            <dt>System Product</dt>
+            <dd>{{ machine.hardware_info.system_product }}</dd>
+            <dt>System Serial Number</dt>
+            <dd>{{ machine.hardware_info.system_serial }}</dd>
+            <dt>System UUID</dt>
+            <dd>{{ machine.hardware_uuid }}</dd>
+            <dt>Architecture</dt>
+            <dd>{{ machine.architecture }}</dd>
+            <dt class="space">⠀</dt>
+            <dt><h4>CPU</h4></dt>
+            <dt class="space">⠀</dt>
+            <dt>Model</dt>
+            <dd>{{ machine.hardware_info.cpu_model }}</dd>
+            <dt class="space">⠀</dt>
+            {% for node in machine.numanode_set %}
+                <dt>CPU {{ node.index }}</dt>
+                <dt>Cores</dt>
+                <dd>{{ node.cores|length }}</dd>
+                <dt>Memory</dt>
+                <dd>{{ node.memory|roundGB }}</dd>
+            {% endfor %}
+        </dl>
+        </div>
+        <div class="details-box info">
+            <div class="network info-box">
+                <h3>Network Info <ion-icon name="swap-vertical-outline"></ion-icon></h3>
+                {% if machine.interface_set == None %}
+                <p>No Links</p>
+                {% endif %}
+                {% for interface in machine.interface_set %}
+                    <p><b {% if interface.link_connected %} style="color: green;" {% else %} style="color: red;" {% endif %}>{{ interface.name }}: </b></p> 
+                    {% if interface.link_connected %} <p>⠀⠀Speed : {{interface.interface_speed|divide:1000}} Gbps</p>{% else %} <p>⠀⠀Not Connected</p> {% endif %}
+                    <p>⠀⠀MAC : {{interface.mac_address}}</p>
+                    {% for links in interface.links %}
+                        <p>⠀⠀IP : {{links.ip_address}}</p>
+                        <p>⠀⠀Subnet : {{links.subnet.cidr}}</p>
+                        <p>⠀⠀Gateway : {{links.subnet.gateway_ip}}</p>
+                    {% endfor %}
+                    <p>⠀⠀Model : {{interface.product}} </p>
+                    <p>⠀⠀Vendor : {{interface.vendor}}</p>
+                {% endfor%}
+            </div>
+            <div class="storage info-box">
+                <h3>Storage <ion-icon name="server-outline"></ion-icon></h3>
+                {% for disk in machine.physicalblockdevice_set %}
+                    <p><b>{{ disk.name }}: </b></p>
+                    <p>⠀⠀Size : {{ disk.size|divide:1000000000 }}GB</p>
+                    <p>⠀⠀Model : {{ disk.model }}</p>
+                    <p>⠀⠀Serial : {{disk.serial}}</p>
+                    <p>⠀⠀Tags : {% for tag in disk.tags %} {{tag}} {% endfor %}</p>
+                    {% for partitions in disk.partitions %}
+                        <p>⠀⠀Partition : {{partitions.uuid}}</p>
+                        <p>⠀⠀⠀⠀Size : {{partitions.size|divide:1000000000}}GB</p>
+                        <p>⠀⠀⠀⠀Filesystem Type: {{partitions.filesystem.fstype}}</p>
+                        <p>⠀⠀⠀⠀Mount: {{partitions.filesystem.mount_point}}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endif %}
+
+<script>
+    function clicked(e,id,state)
+    {
+        if (state === 'on') {
+            e.preventDefault();
+            if (confirm('Are you sure you want to power off this machine?')) {
+                window.location.href = '../power/' + id + '/off/'; 
+            }
+        } else {
+            e.preventDefault();
+            if (confirm('Are you sure you want to power on this machine?')) {
+                window.location.href = '../power/' + id + '/on/'; 
+            }
+        }
+    }
+    </script>
+{% endblock %}
