@@ -39,8 +39,12 @@ class MaaS(models.Model): # MaaS model for storing the MaaS credentials
         return self.Name
     
     def connect(self): # Connect to the MaaS API
-        api.append({'url': f"{self.MAAS_HOST}/MAAS/api/2.0/", 'name': self.Name, "api": OAuth1Session(self.CONSUMER_KEY, resource_owner_key=self.CONSUMER_TOKEN, resource_owner_secret=self.SECRET, signature_method=SIGNATURE_PLAINTEXT)}) # Append the API to the list of all the API's
-        print(api, file=sys.stderr)
+        for i in api:
+            if i['name'] == self.Name:
+                pass
+            else:
+                api.append({'url': f"{self.MAAS_HOST}/MAAS/api/2.0/", 'name': self.Name, "api": OAuth1Session(self.CONSUMER_KEY, resource_owner_key=self.CONSUMER_TOKEN, resource_owner_secret=self.SECRET, signature_method=SIGNATURE_PLAINTEXT)}) # Append the API to the list of all the API's
+                print(api, file=sys.stderr)
         return api
     def disconnect(self): # Disconnect from the MaaS API
         for i in api: # Loop through all the API's
