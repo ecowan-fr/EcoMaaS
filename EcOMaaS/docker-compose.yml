@@ -15,7 +15,7 @@ services:
   db:
       image: mariadb
       environment:
-        MYSQL_ROOT_PASSWORD: ecomaas
+        MYSQL_ROOT_PASSWORD: liam2003
         MYSQL_DATABASE: ecomaas
         MYSQL_USER: ecomaas
         MYSQL_PASSWORD: ecomaas
