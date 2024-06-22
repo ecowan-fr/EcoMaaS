@@ -55,3 +55,6 @@ docker-compose up -d --build
 docker-compose exec web python manage.py migrate --noinput
 
 ```
+# Admin Side
+## Cloud init 
+CLient can deploy a Machine and Define a Password, it will use the stored Cloud-Init by the admin and it will replace $PSSWD with the password and $PHASH with the hashed password
