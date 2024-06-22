@@ -16,6 +16,7 @@ RUN apt install build-essential python3-dbus gcc make cmake libdbus-1-dev python
 RUN apt install libgirepository1.0-dev -y
 RUN apt install postgresql postgresql-client -y
 RUN apt-get install python3-dev default-libmysqlclient-dev build-essential -y
+RUN apt-get install mysql -y
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
