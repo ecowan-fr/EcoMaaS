@@ -5,7 +5,7 @@ config = {
     'user': os.environ.get("SQL_USER", "user"),
     'password': os.environ.get("SQL_PASSWORD", "password"),
     'host': os.environ.get("SQL_HOST", "localhost"),
-    'database': os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+    'database': os.environ.get("SQL_DATABASE"),
 }
 
 # Path to your schema dump file
