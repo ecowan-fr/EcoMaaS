@@ -10,9 +10,9 @@ class ClientsConfig(AppConfig):
     name = 'Clients'
     def ready(self):
         print("ready", file=sys.stderr) # Print ready
-        object = MaaS.objects.all() # Get all the MaaS objects
-        for i in object: # Loop through all the MaaS objects
-            i.connect() # Connect to the MaaS API
-            print("connected", file=sys.stderr) # Print connected
+ #       object = MaaS.objects.all() # Get all the MaaS objects
+ #       for i in object: # Loop through all the MaaS objects
+ #           i.connect() # Connect to the MaaS API
+ #           print("connected", file=sys.stderr) # Print connected
 
 # run at startup
