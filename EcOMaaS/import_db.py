@@ -15,11 +15,11 @@ schema_dump_file = 'schema.sql'
 try:
     connection = mysql.connector.connect(**config)
     cursor = connection.cursor()
-
+    print("Connected to the database.")
     # Read the schema dump file
     with open(schema_dump_file, 'r') as file:
         schema_sql = file.read()
-
+    print("Schema dump file read successfully.")
     # Execute the schema SQL
     for result in cursor.execute(schema_sql, multi=True):
         if result.with_rows:
@@ -30,6 +30,8 @@ try:
 
     # Commit the transaction
     connection.commit()
+    print("Transaction committed.")
+    
 
 except mysql.connector.Error as err:
     print(f"Error: {err}")
