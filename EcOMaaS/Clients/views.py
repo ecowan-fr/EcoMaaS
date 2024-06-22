@@ -184,6 +184,12 @@ def mkpasswd(request): #fonction qui permet de générer un mot de passe
   else:
     return render(request, 'mkpasswd.html', {})  #affiche le formulaire
 
+def connect_maasapi():
+    object = MaaS.objects.all() # Get all the MaaS objects
+    for i in object: # Loop through all the MaaS objects
+        i.connect() # Connect to the MaaS API
+        print("connected", file=sys.stderr) # Print connecte
+
 
 def sha512_crypt(password, salt=None, rounds=None): #fonction qui permet de générer un mot de passe
     randchoice = SystemRandom().choice #génère un mot de passe aléatoire 

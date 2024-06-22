@@ -31,3 +31,8 @@ path('machines/<str:maas_id>/deployform/<str:machine_id>/', views.deployform, na
 
 handler404 = views.handler404 #ajout de la page 404
 
+# run at startup
+#object = MaaS.objects.all() # Get all the MaaS objects
+#for i in object: # Loop through all the MaaS objects
+#    i.connect() # Connect to the MaaS API
+#    print("connected", file=sys.stderr) # Print connecte
