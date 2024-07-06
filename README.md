@@ -17,13 +17,13 @@ docker build -t ecomaas .
 
 ## ENV file 
 ```
-OIDC_RP_CLIENT_ID = "ECOWAN.7589570435c7a3a253627eaa80f54636"
-OIDC_RP_CLIENT_SECRET = "Ik/bgNqwSV4j0STZF8SWuNptxW1fE44b6EwRQqJLuUAaXrequC7s9bxv1Wm+qeCWsDi6FNj/dnRe9Jl926vkNw=="
-OIDC_OP_AUTHORIZATION_ENDPOINT = "https://clients.ecowan.fr/oauth/authorize.php"
-OIDC_OP_TOKEN_ENDPOINT = "https://clients.ecowan.fr/oauth/token.php"
-OIDC_OP_USER_ENDPOINT = "https://clients.ecowan.fr/oauth/userinfo.php?access_token="
+OIDC_RP_CLIENT_ID = ""
+OIDC_RP_CLIENT_SECRET = ""
+OIDC_OP_AUTHORIZATION_ENDPOINT = ""
+OIDC_OP_TOKEN_ENDPOINT = ""
+OIDC_OP_USER_ENDPOINT = ""
 OIDC_RP_SIGN_ALGO="RS256"
-OIDC_OP_JWKS_ENDPOINT="https://clients.ecowan.fr/oauth/certs.php"
+OIDC_OP_JWKS_ENDPOINT=""
 DJANGO_ALLOWED_HOSTS=*
 DEBUG=1
 SECRET_KEY=foo
