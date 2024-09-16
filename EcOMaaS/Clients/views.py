@@ -202,8 +202,10 @@ def connect_maasapi():
     object = MaaS.objects.all() # Get all the MaaS objects
     print(object, file=sys.stdout)
     for i in object: # Loop through all the MaaS objects
-        i.connect() # Connect to the MaaS API
+        maasapi = i.connect()
+        print(i.connect(), file=sys.stdout) # Connect to the MaaS API
         print("connected", file=sys.stdout) # Print connecte
+    return maasapi
 
 
 def sha512_crypt(password, salt=None, rounds=None): #fonction qui permet de générer un mot de passe
