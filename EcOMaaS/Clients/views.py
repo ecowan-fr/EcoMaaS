@@ -21,7 +21,8 @@ Debug = True # Set the Debug variable to False
 @login_required(login_url='/accounts/login/') #si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
 def machines(request): #fonction qui permet d'afficher les machines
     connect_maasapi() #connecte les api
-    machine = {}
+    machine = {} 
+    print(maasapi, file=sys.stdout)
     for maasapi in api:
         response = maasapi["api"].get(f"{maasapi['url']}machines/") #récupère les machines
         machine[maasapi['name']] = json.loads(response.content) #stocke les machines dans un dictionnaire
