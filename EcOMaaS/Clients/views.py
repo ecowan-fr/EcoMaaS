@@ -26,7 +26,7 @@ def machines(request): #fonction qui permet d'afficher les machines
         response = maasapi["api"].get(f"{maasapi['url']}machines/") #récupère les machines
         machine[maasapi['name']] = json.loads(response.content) #stocke les machines dans un dictionnaire
         if Debug:
-            print(response.content, file=sys.stderr)
+            print(response.content, file=sys.stdout)
     return render(request, 'machines.html', {'dic_machines': machine})
 
 @login_required(login_url='/accounts/login/')
