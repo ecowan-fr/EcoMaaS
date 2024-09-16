@@ -25,6 +25,8 @@ def machines(request): #fonction qui permet d'afficher les machines
     for maasapi in api:
         response = maasapi["api"].get(f"{maasapi['url']}machines/") #récupère les machines
         machine[maasapi['name']] = json.loads(response.content) #stocke les machines dans un dictionnaire
+        if Debug:
+            print(response.content, file=sys.stderr)
     return render(request, 'machines.html', {'dic_machines': machine})
 
 @login_required(login_url='/accounts/login/')
@@ -35,6 +37,8 @@ def show_maas(request,maas_id): #fonction qui permet d'afficher les machines d'u
         if maasapi['name'] == maas_id: #si le nom de l'api est égal à l'id du maas
             response = maasapi["api"].get(f"{maasapi['url']}machines/")     #récupère les machines
             machine_maas[maasapi['name']] = json.loads(response.content)
+            if Debug:
+                print(response.content, file=sys.stderr)
             return render(request, 'machines.html', {'dic_machines': machine_maas, 'maas_id': maas_id}) #affiche les machines
     return  render(request,'404.html', {}) #affiche une erreur 404 si le maas n'existe pas
 
