@@ -20,7 +20,7 @@ Debug = True # Set the Debug variable to False
 # Create your views here.
 @login_required(login_url='/accounts/login/') #si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
 def machines(request): #fonction qui permet d'afficher les machines
-    connect_maasapi() #connecte les api
+    maasapi = connect_maasapi() #connecte les api
     machine = {} 
     print(maasapi, file=sys.stdout)
     for maasapi in api:
