@@ -41,6 +41,7 @@ class MaaS(models.Model): # MaaS model for storing the MaaS credentials
     def connect(self): # Connect to the MaaS API
         for i in api:
             if i['name'] == self.Name:
+                print("already connected", file=sys.stderr)
                 pass
             else:
                 api.append({'url': f"{self.MAAS_HOST}/MAAS/api/2.0/", 'name': self.Name, "api": OAuth1Session(self.CONSUMER_KEY, resource_owner_key=self.CONSUMER_TOKEN, resource_owner_secret=self.SECRET, signature_method=SIGNATURE_PLAINTEXT)}) # Append the API to the list of all the API's
