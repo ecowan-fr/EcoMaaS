@@ -203,6 +203,7 @@ def connect_maasapi():
     print(object, file=sys.stdout)
     for i in object: # Loop through all the MaaS objects
         maasapi = i.connect()
+        print(i.Name, end=' ', file=sys.stdout)
         print(maasapi, end='', file=sys.stdout) # Connect to the MaaS API
         print("connected", file=sys.stdout) # Print connecte
     return maasapi
