@@ -24,6 +24,7 @@ Debug = True # Set the Debug variable to False
 def machines(request): #fonction qui permet d'afficher les machines
     maasapi = connect_maasapi() #connecte les api
     machine = {} 
+    print("machines", file=sys.stdout)
     print(maasapi, file=sys.stdout)
     for maasapi in api:
         response = maasapi["api"].get(f"{maasapi['url']}machines/") #récupère les machines
