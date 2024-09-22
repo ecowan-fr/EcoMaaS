@@ -209,11 +209,15 @@ def connect_maasapi():
     except:
         maasapi = dict()
     for i in object: # Loop through all the MaaS objects
-        if maasapi['name'] == i.Name:
-            print("already connected", file=sys.stderr)
-            pass
-        else:
-            maasapi.append({'url': f"{i.MAAS_HOST}/MAAS/api/2.0/", 'name': i.Name, "api": OAuth1Session(i.CONSUMER_KEY, resource_owner_key=i.CONSUMER_TOKEN, resource_owner_secret=i.SECRET, signature_method=SIGNATURE_PLAINTEXT)})
+        try:
+            if maasapi['name'] == i.Name:
+                print("already connected", file=sys.stderr)
+                pass
+            else:
+                maasapi.append({'url': f"{i.MAAS_HOST}/MAAS/api/2.0/", 'name': i.Name, "api": OAuth1Session(i.CONSUMER_KEY, resource_owner_key=i.CONSUMER_TOKEN, resource_owner_secret=i.SECRET, signature_method=SIGNATURE_PLAINTEXT)})
+        except:
+            print("first connection", file=sys.stderr)
+                maasapi.append({'url': f"{i.MAAS_HOST}/MAAS/api/2.0/", 'name': i.Name, "api": OAuth1Session(i.CONSUMER_KEY, resource_owner_key=i.CONSUMER_TOKEN, resource_owner_secret=i.SECRET, signature_method=SIGNATURE_PLAINTEXT)})
     return maasapi
 
 
