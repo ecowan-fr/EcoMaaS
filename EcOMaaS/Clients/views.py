@@ -203,6 +203,7 @@ def connect_maasapi():
     object = MaaS.objects.all() # Get all the MaaS objects
     print(object, file=sys.stdout)
     if 'maasapi' not in locals():
+        print("maasapi not in locals", file=sys.stderr)
         maasapi = {}
     for i in object: # Loop through all the MaaS objects
         if maasapi['name'] == i.Name:
