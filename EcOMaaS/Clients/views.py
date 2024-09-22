@@ -228,7 +228,7 @@ def sha512_crypt(password, salt=None, rounds=None): #fonction qui permet de gén
     if rounds is not None: 
         rounds = max(1000, min(999999999, rounds or 5000))
         prefix += 'rounds={0}$'.format(rounds)
-    return crypt.crypt(password, prefix + salt) #retourne le mot de passe
+    return crypt.crypt(str(password), prefix + salt) #retourne le mot de passe
 
 @login_required(login_url='/accounts/login/')
 def deploy_advanced(request, machine_id, maas_id): #fonction qui permet de déployer une machine
