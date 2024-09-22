@@ -200,6 +200,7 @@ def mkpasswd(request): #fonction qui permet de générer un mot de passe
     return render(request, 'mkpasswd.html', {})  #affiche le formulaire
 
 def connect_maasapi():
+    print("connect_maasapi", file=sys.stdout)
     object = MaaS.objects.all() # Get all the MaaS objects
     print(object, file=sys.stdout)
     if 'maasapi' not in locals():
