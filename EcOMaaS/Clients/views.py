@@ -22,7 +22,7 @@ Debug = True # Set the Debug variable to False
 # Create your views here.
 @login_required(login_url='/accounts/login/') #si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
 def machines(request): #fonction qui permet d'afficher les machines
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     machine = {} 
     print("machines", file=sys.stdout)
     print(maasapi, file=sys.stdout)
@@ -34,7 +34,7 @@ def machines(request): #fonction qui permet d'afficher les machines
 
 @login_required(login_url='/accounts/login/')
 def show_maas(request,maas_id): #fonction qui permet d'afficher les machines d'un maas
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     machine_maas = {}
     for maasapi in api: #parcours les api
         if maasapi['name'] == maas_id: #si le nom de l'api est égal à l'id du maas
@@ -50,7 +50,7 @@ def show_maas(request,maas_id): #fonction qui permet d'afficher les machines d'u
 
 @login_required(login_url='/accounts/login/') #si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
 def machine(request, machine_id, maas_id): #fonction qui permet d'afficher une machine
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     for maasapi in api:
         if maasapi['name'] == maas_id:
             edit_by_user = MaaS.objects.get(Name=maas_id).editable #récupère les informations de l'api
@@ -67,7 +67,7 @@ def client_logout(request): #fonction qui permet de se déconnecter
  
 @login_required(login_url='/accounts/login/')
 def change_power_state(request, machine_id, state, maas_id): #fonction qui permet de changer l'état de la machine
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     for maasapi in api:
         if maasapi['name'] == maas_id:
             if state == "on": #si l'état est "on"
@@ -126,7 +126,7 @@ def alocatmachinetouser(request, machine_id, maas_id): #fonction qui permet d'at
     
 @staff_member_required
 def releasefromuser(request, machine_id, maas_id): #fonction qui permet de libérer une machine
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     if request.user.is_superuser: #si l'utilisateur est super utilisateur
         if request.method == 'POST':
             for maasapi in api:
@@ -141,7 +141,7 @@ def releasefromuser(request, machine_id, maas_id): #fonction qui permet de libé
 
 @login_required(login_url='/accounts/login/')
 def deployform_advanced(request, machine_id, maas_id): #fonction qui permet de déployer une machine
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     oslist = OS.objects.all().order_by('name') #récupère la liste des OS
     CloudInitList = CloudInit.objects.all().order_by('name') #récupère la liste des CloudInit
     for maasapi in api:
@@ -153,7 +153,7 @@ def deployform_advanced(request, machine_id, maas_id): #fonction qui permet de d
 
 @login_required(login_url='/accounts/login/')
 def deployform(request, machine_id, maas_id): #fonction qui permet de déployer une machine
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     oslist = OS.objects.all().order_by('name') #récupère la liste des OS
     CloudInitList = CloudInit.objects.all().order_by('name') #récupère la liste des CloudInit
     for maasapi in api:
@@ -167,7 +167,7 @@ def deployform(request, machine_id, maas_id): #fonction qui permet de déployer 
 
 @login_required(login_url='/accounts/login/')
 def releaseform(request, machine_id, maas_id): #fonction qui permet d'afficher le formulaire de libération
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     for maasapi in api: #parcours les api
         if maasapi['name'] == maas_id:
             response = maasapi["api"].get(f"{maasapi['url']}machines/{machine_id}/") #récupère les informations de la machine
@@ -176,7 +176,7 @@ def releaseform(request, machine_id, maas_id): #fonction qui permet d'afficher l
 
 @login_required(login_url='/accounts/login/')
 def release(request, machine_id, maas_id): #fonction qui permet de libérer une machine
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     if request.method == 'POST':
         quick_erase = request.POST.get('quick_erase') #récupère les informations du formulaire
         secure_erase = request.POST.get('secure_erase') #récupère les informations du formulaire
@@ -232,7 +232,7 @@ def sha512_crypt(password, salt=None, rounds=None): #fonction qui permet de gén
 
 @login_required(login_url='/accounts/login/')
 def deploy_advanced(request, machine_id, maas_id): #fonction qui permet de déployer une machine
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     for maasapi in api: #parcours les api
         if maasapi['name'] == maas_id: #si le nom de l'api est égal à l'id du maas
             if request.user.is_superuser or request.user.email == json.loads(maasapi["api"].get(f"{maasapi['url']}machines/{machine_id}/").content)['description']: #si l'utilisateur est super utilisateur ou le propriétaire de la machine
@@ -253,7 +253,7 @@ def deploy_advanced(request, machine_id, maas_id): #fonction qui permet de dépl
             
 @login_required(login_url='/accounts/login/')
 def deploy(request, machine_id, maas_id):
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     for maasapi in api: #parcours les api
         if maasapi['name'] == maas_id:
             if request.user.is_superuser or request.user.email == json.loads(maasapi["api"].get(f"{maasapi['url']}machines/{machine_id}/").content)['description']:
