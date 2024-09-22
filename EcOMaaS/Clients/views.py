@@ -111,7 +111,7 @@ def locallogin(request): #fonction qui permet de se connecter en local
 
 @staff_member_required #seul le staff peut accéder à cette page
 def alocatmachinetouser(request, machine_id, maas_id): #fonction qui permet d'attribuer une machine à un utilisateur
-    maasapi = connect_maasapi() #connecte les api
+    api = connect_maasapi() #connecte les api
     if request.user.is_superuser: #si l'utilisateur est super utilisateur
         if request.method == 'POST': #si la méthode est POST
             email = request.POST.get('email') #récupère l'email
