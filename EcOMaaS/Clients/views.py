@@ -202,6 +202,8 @@ def mkpasswd(request): #fonction qui permet de générer un mot de passe
 def connect_maasapi():
     object = MaaS.objects.all() # Get all the MaaS objects
     print(object, file=sys.stdout)
+    if 'maasapi' not in locals():
+        maasapi = {}
     for i in object: # Loop through all the MaaS objects
         if maasapi['name'] == i.Name:
             print("already connected", file=sys.stderr)
