@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import sys # Import the sys module
 from requests_oauthlib import OAuth1Session # Import the OAuth1Session class from the requests_oauthlib module
+from oauthlib.oauth1 import SIGNATURE_PLAINTEXT
 import json  # Import the json module
 from django.contrib.auth.decorators import login_required # Import the login_required decorator
 from django.shortcuts import redirect # Import the redirect function
