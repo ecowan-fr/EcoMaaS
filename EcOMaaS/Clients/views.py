@@ -223,7 +223,7 @@ def sha512_crypt(password, salt=None, rounds=None): #fonction qui permet de gén
     if salt is None:  # genere un salt
         salt = ''.join([randchoice(string.ascii_letters + string.digits) 
                         for _ in range(8)])
-    if debug:
+    if Debug:
         print(password, file=sys.stderr)
     prefix = '$6$' 
     if rounds is not None: 
