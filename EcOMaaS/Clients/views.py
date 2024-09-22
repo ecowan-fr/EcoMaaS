@@ -21,6 +21,7 @@ Debug = True # Set the Debug variable to False
 # Create your views here.
 @login_required(login_url='/accounts/login/') #si l'utilisateur n'est pas connecté, il est redirigé vers la page de connexion
 def machines(request): #fonction qui permet d'afficher les machines
+    maasapi = dict() #dictionnaire vide
     maasapi = connect_maasapi() #connecte les api
     machine = {} 
     print(maasapi, file=sys.stdout)
@@ -203,9 +204,10 @@ def connect_maasapi():
     print("connect_maasapi", file=sys.stdout)
     object = MaaS.objects.all() # Get all the MaaS objects
     print(object, file=sys.stdout)
-    if 'maasapi' not in locals():
-        print("maasapi not in locals", file=sys.stderr)
-        maasapi = {}
+    try:
+        print(maasapi, file=sys.stdout)
+    except:
+        maasapi = dict()
     for i in object: # Loop through all the MaaS objects
         if maasapi['name'] == i.Name:
             print("already connected", file=sys.stderr)
