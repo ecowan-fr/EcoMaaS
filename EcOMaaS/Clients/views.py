@@ -207,7 +207,7 @@ def connect_maasapi():
             print("already connected", file=sys.stderr)
             pass
         else:
-            api.append({'url': f"{i.MAAS_HOST}/MAAS/api/2.0/", 'name': i.Name, "api": OAuth1Session(i.CONSUMER_KEY, resource_owner_key=i.CONSUMER_TOKEN, resource_owner_secret=i.SECRET, signature_method=SIGNATURE_PLAINTEXT)})
+            maasapi.append({'url': f"{i.MAAS_HOST}/MAAS/api/2.0/", 'name': i.Name, "api": OAuth1Session(i.CONSUMER_KEY, resource_owner_key=i.CONSUMER_TOKEN, resource_owner_secret=i.SECRET, signature_method=SIGNATURE_PLAINTEXT)})
     return maasapi
 
 
