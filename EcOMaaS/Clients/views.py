@@ -14,7 +14,8 @@ import crypt
 import os
 import string 
 from random import SystemRandom # Import the SystemRandom class
-    
+
+
 Debug = True # Set the Debug variable to False
 
 # Create your views here.
@@ -202,10 +203,11 @@ def connect_maasapi():
     object = MaaS.objects.all() # Get all the MaaS objects
     print(object, file=sys.stdout)
     for i in object: # Loop through all the MaaS objects
-        maasapi = i.connect()
-        print(i.Name, end=' ', file=sys.stdout)
-        print(maasapi, end='', file=sys.stdout) # Connect to the MaaS API
-        print("connected", file=sys.stdout) # Print connecte
+        if maasapi['name'] == i.Name:
+            print("already connected", file=sys.stderr)
+            pass
+        else:
+            api.append({'url': f"{i.MAAS_HOST}/MAAS/api/2.0/", 'name': i.Name, "api": OAuth1Session(i.CONSUMER_KEY, resource_owner_key=i.CONSUMER_TOKEN, resource_owner_secret=i.SECRET, signature_method=SIGNATURE_PLAINTEXT)})
     return maasapi
 
 
