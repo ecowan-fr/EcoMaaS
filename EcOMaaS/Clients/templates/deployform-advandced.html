@@ -9,7 +9,7 @@
 
         {%if machine.status_name == "Ready" %}
             <div class="info-box" style="text-align: center;">
-                <form action="{% url 'deploy' maas_id machine.system_id  %}" method="POST">
+                <form action="{% url 'deployform-advanced' maas_id machine.system_id  %}" method="POST">
                     {% csrf_token %}
                     <label for="os">Choose an OS:</label>
                     <select id="os" name="oslist">
